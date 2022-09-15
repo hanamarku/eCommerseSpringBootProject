@@ -1,16 +1,12 @@
 package com.cozycats.cozycatsbackend.admin.user;
 
-import com.cozycats.cozycatsbackend.admin.user.user.UserRepository;
 import com.cozycats.cozycatscommon.entity.Role;
 import com.cozycats.cozycatscommon.entity.User;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.test.annotation.Rollback;
-
-import java.util.List;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 

@@ -1,4 +1,4 @@
-package com.cozycats.cozycatsbackend.admin.user.user;
+package com.cozycats.cozycatsbackend.admin.user;
 
 import com.cozycats.cozycatscommon.entity.User;
 import org.springframework.data.repository.CrudRepository;

@@ -1,4 +1,4 @@
-package com.cozycats.cozycatsbackend.admin.user.user;
+package com.cozycats.cozycatsbackend.admin.user;
 
 import com.cozycats.cozycatscommon.entity.Role;
 import org.springframework.data.jpa.repository.JpaRepository;
