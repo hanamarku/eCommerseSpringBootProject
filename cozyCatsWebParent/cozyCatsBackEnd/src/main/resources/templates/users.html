@@ -5,14 +5,19 @@
     <meta name="viewport" content="width=device-width; initial-scale=1.0, minimum-scale=1.0">
     <title>Home - COzyCats Admin</title>
     <link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/5.2.0/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/fontawesome/all.css}">
+    <link rel="stylesheet" th:href="@{/style.css}">
     <script type="text/javascript" th:src="@{/webjars/jquery/3.5.1/jquery.min.js}"></script>
     <script type="text/javascript" th:src="@{/webjars/bootstrap/5.2.0/js/bootstrap.min.js}"></script>
+
+
 </head>
 <body>
 <div>
     <nav class="navbar navbar-expand-lg text-dark" style="background-color: rgba(233, 229, 221, 0.836);">
         <a class="navbar-brand" th:href="@{/}">
-            <img th:src="@{/images/logo-removebg-preview.png}" width="200px;">
+            <img th:href="@{/images/logo-removebg-preview.png}" width="200px;">
+
         </a>
         <button class="navbar-toggler" type="button" data-data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
             <span class="navbar-toggler-icon"></span>
@@ -52,16 +57,6 @@
                 <li class="nav-item">
                     <a class="nav-link" th:href="@{/settings}">Settings</a>
                 </li>
-
-
-
-
-
-
-
-
-
-
             </ul>
         </div>
 
@@ -72,21 +67,65 @@
 
     <div>
         <h1> Manage Users </h1>
-        <a th:href="@{/users/new}">Create New User</a>
+        <a th:href="@{/users/new}" class="text-decoration-none">Create New User</a>
     </div>
 
     <div th:if="${message != null}" class="alert alert-success text-center">
         [[${message}]]
     </div>
+<br>
     <div>
-        <table class="table table-bordered table-striped table-hover table-responsive-xl">
+        <form th:action="@{/users/page/1}" class="form-check-inline">
+            Filter:
+            <input type="search" name="keyboard" required class="form-control">
+        </form>
+    </div>
+<br>
+    <div>
+        <table class="table table-bordered table-striped table-hover table-responsive-xl" style="text-decoration: none;">
             <thead class="table-primary">
-                <tr>
-                    <th>User ID</th>
+                <tr class="text-decoration-none" style="text-decoration: none;">
+                    <th>
+                        <a  th:if="${sortField != 'id'}" class="text-black text-decoration-none"
+                           th:href="@{'/users/page/' + ${currentPage} + '?sortField=id&sortDir='+${sortDir}}">
+                            User ID</a>
+                        <a th:if="${sortField == 'id'}" class="text-black text-decoration-none"
+                           th:href="@{'/users/page/' + ${currentPage} + '?sortField=id&sortDir='+${reverseSortDir}}">
+                            User ID</a>
+                        <span th:if="${sortField == 'email'}"
+                              th:class="${sortDir == 'asc' ? 'fas fa-sort-up' : 'fas fa-sort-down'}"></span>
+                    </th>
                     <th>Photo</th>
-                    <th>Email</th>
-                    <th>First name</th>
-                    <th>Last Name</th>
+                    <th>
+                        <a th:if="${sortField != 'email'}" class="text-black text-decoration-none"
+                           th:href="@{'/users/page/' + ${currentPage} + '?sortField=email&sortDir='+${sortDir}}">
+                            E-mail</a>
+                        <a th:if="${sortField == 'email'}" class="text-black text-decoration-none"
+                           th:href="@{'/users/page/' + ${currentPage} + '?sortField=email&sortDir='+${reverseSortDir}}">
+                            E-mail</a>
+                        <span th:if="${sortField == 'email'}"
+                              th:class="${sortDir == 'asc' ? 'fas fa-sort-up' : 'fas fa-sort-down'}"></span>
+                    </th>
+                    <th>
+                        <a th:if="${sortField != 'firstname'}" class="text-black text-decoration-none"
+                        th:href="@{'/users/page/' + ${currentPage} + '?sortField=firstname&sortDir='+${sortDir}}">
+                            First name</a>
+                        <a th:if="${sortField == 'firstname'}" class="text-black text-decoration-none"
+                           th:href="@{'/users/page/' + ${currentPage} + '?sortField=firstname&sortDir='+${reverseSortDir}}">
+                            First name</a>
+                        <span th:if="${sortField == 'firstname'}"
+                        th:class="${sortDir == 'asc' ? 'fas fa-sort-up' : 'fas fa-sort-down'}"></span>
+                    </th>
+                    <th>
+                        <a th:if="${sortField != 'lastname'}" class="text-black text-decoration-none"
+                           th:href="@{'/users/page/' + ${currentPage} + '?sortField=lastname&sortDir='+${sortDir}}">
+                            Last Name</a>
+                        <a th:if="${sortField == 'lastname'}" class="text-black text-decoration-none"
+                           th:href="@{'/users/page/' + ${currentPage} + '?sortField=lastname&sortDir='+${reverseSortDir}}">
+                            Last Name</a>
+                        <span th:if="${sortField == 'lastname'}"
+                              th:class="${sortDir == 'asc' ? 'fas fa-sort-up' : 'fas fa-sort-down'}"></span>
+                    </th>
                     <th>Roles</th>
                     <th>Enabled</th>
                     <th></th>
@@ -95,22 +134,101 @@
             <tbody>
                 <tr th:each="user : ${listUsers}">
                     <td>[[${user.id}]]</td>
-                    <td>[[${user.photos}]]</td>
+                    <td>
+                        <span th:if="${user.photos == null}" class="fa-solid fa-image-portrait fa-2x icon-silver"></span>
+                        <img th:if="${user.photos != null}" th:src="@{${user.photosImagePath}}"
+                        style="width: 100px">
+                    </td>
                     <td>[[${user.email}]]</td>
                     <td>[[${user.firstname}]]</td>
                     <td>[[${user.lastname}]]</td>
                     <td>[[${user.roles}]]</td>
-                    <td>[[${user.enabled}]]</td>
-                    <td>
-                        Edit &nbsp; Delete
+                    <td class="text-center">
+                        <a th:if="${user.enabled == true}" class="fas fa-check-circle fa-2x icon-green "
+                           th:href="@{'/users/' + ${user.id} + '/enabled/false'}"
+                        title="Disable this user"></a>
+                        <a th:if="${user.enabled == false}" class="fas fa-circle fa-2x icon-dark "
+                           th:href="@{'/users/' + ${user.id} + '/enabled/true'}"
+                        title="Enable this user"></a>
+                    </td>
+                    <td class="text-center">
+                        <a class="fa-solid fa-user-pen icon-blue fa-2x" th:href="@{'/users/edit/' + ${user.id}}"
+                        title="Edit this user"></a>
+                         &nbsp; &nbsp; &nbsp;
+                        <a class="fa-solid fa-trash fa-2x icon-red link-delete" th:href="@{'/users/delete/' + ${user.id}}"
+                        title="Delete this user"
+                        th:userId = "${user.id}"></a>
                     </td>
                 </tr>
             </tbody>
         </table>
 
+        <div class="text-center m-1" th:if="${totalItems > 0}">
+            <span>Showing users # [[${startCount}]] to [[${endCount}]] of [[${totalItems}]]</span>
+        </div>
+
+        <div class="text-center m-1" th:unless="${totalItems > 0}">
+            <span>No Users Found</span>
+        </div>
+
+        <div>
+            <nav >
+                <ul class="pagination justify-content-center">
+                    <li th:class="${currentPage > 1 ? 'page-item' : 'page-item disabled'}">
+                        <a class="page-link" th:href="@{'/users/page/1?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}" href="#">First</a>
+                    </li>
+                    <li th:class="${currentPage > 1 ? 'page-item' : 'page-item disabled'}">
+                        <a class="page-link" th:href="@{'/users/page/' + ${currentPage - 1} + '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">Previous</a>
+                    </li>
+                    <li th:each=" i : ${#numbers.sequence(1, totalPages )}"
+                            th:class="${currentPage != i  ? 'page-item ': 'page-item active'}"  >
+                        <a class="page-link" th:href="@{'/users/page/' + ${i} + '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">[[${i}]]</a>
+                    </li>
+                    <li th:class="${currentPage < totalPages ? 'page-item' : 'page-item disabled'}">
+                        <a class="page-link" th:href="@{'/users/page/' + ${currentPage + 1} + '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}" href="#">Next</a>
+                    </li>
+                    <li th:class="${currentPage < totalPages ? 'page-item' : 'page-item disabled'}">
+                        <a class="page-link" th:href="@{'/users/page/' + ${totalPages} + '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}" href="#">Last</a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+
+
+        <div class="modal fade text-center" id="confirmDialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title" id="modalTitle">Delete Confirmation</h4>
+                        <button type="button" class="Close" data-bs-dismiss="modal">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <span id="confirmText"> </span>
+                    </div>
+                    <div class="modal-footer">
+                        <a class="btn btn-success" id="yesBtn" href="">Yes</a>
+                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">No</button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
     <div class="text-center">
         <p>CozyCats Control Panel - Copyright &copy;CozyCats</p>
     </div>
+<div>
+    <script type="text/javascript">
+        $(document).ready(function(){
+           $(".link-delete").on("click", function (e){
+               e.preventDefault();
+               link = $(this);
+               userId = link.attr("userId");
+               $("#yesBtn").attr("href", link.attr("href"));
+               $("#confirmText").text("Are you sure you want to remove this user ( Id : "+ userId+" )?");
+               $("#confirmDialog").modal("show");
+           })
+        });
+    </script>
+</div>
 </body>
 </html>
