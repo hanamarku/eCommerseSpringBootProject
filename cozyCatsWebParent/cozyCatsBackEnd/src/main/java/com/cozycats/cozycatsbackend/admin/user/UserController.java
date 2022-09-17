@@ -20,6 +20,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 
+import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
@@ -140,4 +141,38 @@ public class UserController {
         return "redirect:/users";
     }
 
+    @GetMapping("/users/export/csv")
+    public void exportToCSV(HttpServletResponse response) throws IOException {
+        List<User> listUsers = service.listAll();
+        UserCsvExporter exporter = new UserCsvExporter();
+        exporter.export(listUsers, response);
+    }
+
+    @GetMapping("/users/export/excel")
+    public void exportToExcel(HttpServletResponse response) throws IOException {
+        List<User> listUsers = service.listAll();
+        UserExcelExporter excelExporter = new UserExcelExporter();
+        excelExporter.export(listUsers, response);
+    }
+
+    @GetMapping("/users/export/pdf")
+    public void exportToPdf(HttpServletResponse response) throws IOException {
+        List<User> listUsers = service.listAll();
+        UserPdfExporter excelExporter = new UserPdfExporter();
+        excelExporter.export(listUsers, response);
+
+    }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+

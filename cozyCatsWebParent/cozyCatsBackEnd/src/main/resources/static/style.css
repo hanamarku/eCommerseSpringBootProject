@@ -4,3 +4,22 @@
 *.icon-dark{color:gray}
 *.icon-red{color:red}
 *.icon-blue{color:steelblue}
+
+@media  screen and (max-width: 768px) {
+    /*small screen*/
+    div.less-details{display: block;}
+    div.full-details{display: none}
+
+}
+
+@media  screen and (max-width: 768px) and (max-width: 1024px){
+    /*medium screen*/
+    div.less-details{display: none;}
+    div.full-details{display: block;}
+    th, td .h
+}
+
+@media  screen and (min-width: 1024px) {
+    /*large screen*/
+    div.less-details{display: none;}
+}

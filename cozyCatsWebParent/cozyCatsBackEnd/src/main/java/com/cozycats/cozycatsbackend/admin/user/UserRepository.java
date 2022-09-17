@@ -18,8 +18,8 @@ public interface UserRepository extends PagingAndSortingRepository<User, Integer
 
     public Long countById(Integer id);
 
-    @Query("select u from User u where u.firstname like %?1% or u.lastname like %?1% " +
-            "or u.email like %?1%")
+    @Query("select u from User u where CONCAT(u.id, ' ', u.email, ' ', u.firstname, ' ', " +
+            "u.lastname) like %?1%")
     public Page<User> findAll(String keyword, Pageable pageable);
 
     @Query("update User u set u.enabled =?2 where u.id = ?1")
