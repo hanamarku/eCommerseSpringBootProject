@@ -1,4 +1,4 @@
-package com.cozycats.cozycatsbackend.admin.admin;
+package com.cozycats.cozycatsbackend.admin;
 
 import org.springframework.context.annotation.Configuration;
 

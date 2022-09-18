@@ -9,6 +9,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+//import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -26,8 +28,8 @@ public class UserService {
     @Autowired
     private RoleRepository roleRepo;
 
-//    @Autowired
-//    private PasswordEncoder passwordEncoder;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
 
     public List<User> listAll(){
@@ -55,18 +57,14 @@ public class UserService {
             if(user.getPassword().isEmpty()){
                 user.setPassword(existingUser.getPassword());
             }else{
-                //encodePassword(user);
+//                PasswordEncoder(user);
             }
         }else {
-            //encodePassword(user);
+//            PasswordEncoder(user);
         }
         return userRepo.save(user);
     }
 
-//    private void encodePassword(User user){
-//        String encodedPassword = passwordEncoder.encode(user.getPassword());
-//        user.setPassword(encodedPassword);
-//    }
 
     public boolean isEmailUnique(Integer id, String email){
         User userByEmail = userRepo.getUserByEmail(email);
@@ -102,5 +100,10 @@ public class UserService {
 
     public void updateUserEnableStatus(Integer id, boolean enabled){
         userRepo.updateEnableStatus(id, enabled);
+    }
+
+    private void encodePassword(User user) {
+        String encodedPassword = passwordEncoder.encode(user.getPassword());
+        user.setPassword(encodedPassword);
     }
 }

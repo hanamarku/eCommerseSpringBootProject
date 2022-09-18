@@ -3,7 +3,6 @@ package com.cozycats.cozycatsbackend.admin.user;
 import com.cozycats.cozycatscommon.entity.User;
 import com.lowagie.text.*;
 import com.lowagie.text.Font;
-import com.lowagie.text.pdf.PdfCell;
 import com.lowagie.text.pdf.PdfPCell;
 import com.lowagie.text.pdf.PdfPTable;
 import com.lowagie.text.pdf.PdfWriter;

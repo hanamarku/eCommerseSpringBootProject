@@ -1,7 +1,7 @@
 package com.cozycats.cozycatsbackend.admin.user;
 
 
-import com.cozycats.cozycatsbackend.admin.admin.FileUploadUtil;
+import com.cozycats.cozycatsbackend.admin.FileUploadUtil;
 import com.cozycats.cozycatscommon.entity.Role;
 import com.cozycats.cozycatscommon.entity.User;
 
@@ -21,7 +21,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 
 import javax.servlet.http.HttpServletResponse;
-import java.io.File;
 import java.io.IOException;
 import java.util.List;
 

@@ -1,17 +1,12 @@
 package com.cozycats.cozycatsbackend.admin.user;
 
 import com.cozycats.cozycatscommon.entity.User;
-import org.springframework.web.client.HttpServerErrorException;
 import org.supercsv.io.CsvBeanWriter;
 import org.supercsv.io.ICsvBeanWriter;
 import org.supercsv.prefs.CsvPreference;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 
 public class UserCsvExporter  extends AbstractExporter{

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width; initial-scale=1.0, minimum-scale=1.0">
+    <title>Login - CozyCats Admin</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/5.2.0/css/bootstrap.min.css}">
+
+</head>
+<body>
+<div class="container-fluid text-center">
+    <div>
+        <img th:src="@{/images/logo-removebg-preview.png}">
+    </div>
+    <form th:action="@{/login}" method="post" style="max-width: 350px; margin: 0 auto">
+        <div th:if="${param.error}">
+            <p class="alert alert-danger">[[${session.SPRING_SECURITY_LAST_EXCEPTION.message}]]</p>
+        </div>
+        <div class="border border-secondary rounded p-3">
+            <div class="mb-3">
+                <label for="exampleInputEmail1" class="form-label">Email address</label>
+                <input type="email" name="username" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" required placeholder="E-mail">
+            </div>
+            <div class="mb-3">
+                <label for="exampleInputPassword1" class="form-label">Password</label>
+                <input type="password" name="password" class="form-control" id="exampleInputPassword1" required placeholder="Password">
+            </div>
+            <input type="submit" value="Login" class="btn btn-primary"/>
+        </div>
+    </form>
+    <div>
+        <p>CozyCats Control Panel - Copyright &copy;CozyCats</p>
+    </div>
+</div>
+</body>
+</html>
