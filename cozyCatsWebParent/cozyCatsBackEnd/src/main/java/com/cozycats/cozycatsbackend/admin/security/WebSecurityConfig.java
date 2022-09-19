@@ -18,13 +18,13 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 @Configuration
 @EnableWebSecurity
-@EnableWebMvc
+//@EnableWebMvc
 //@ComponentScan
 //@EnableAutoConfiguration
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Bean
-    public UserDetailsService userDetailsServiceBean(){
+    public UserDetailsService userDetailsService(){
         return new CozyCatsUserDetailsService();
     }
 
@@ -41,25 +41,36 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         return authProvider;
     }
 
+@Override
+public void configure(WebSecurity web) throws Exception {
+    web
+            .ignoring()
+            .antMatchers("/**/*.js", "/**/*.css", "/**/*.png");
+}
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.authenticationProvider(authenticationProvider());
     }
 
+//    @Override
+//    protected void configure(HttpSecurity http) throws Exception {
+//        http.authorizeRequests().anyRequest().permitAll();
+//    }
+
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http
-                .authorizeRequests()
+        http.authorizeRequests()
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()
-                .loginPage("/login")
-                .usernameParameter("username")
-                .permitAll();
+                    .loginPage("/login")
+                    .usernameParameter("email")
+                    .permitAll();
     }
-
-    @Override
-    public void configure(WebSecurity web) throws Exception {
-        web.ignoring().antMatchers("/images/**", "/js/**", "/webjars/**");
-    }
+//
+//    @Override
+//    public void configure(WebSecurity web) throws Exception {
+//        web.ignoring().antMatchers("/images/**", "/js/**", "/webjars/**");
+//    }
 }

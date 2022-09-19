@@ -1,5 +1,6 @@
 package com.cozycats.cozycatsbackend.admin.user;
 
+import com.cozycats.cozycatsbackend.admin.AbstractExporter;
 import com.cozycats.cozycatscommon.entity.User;
 import com.lowagie.text.*;
 import com.lowagie.text.Font;

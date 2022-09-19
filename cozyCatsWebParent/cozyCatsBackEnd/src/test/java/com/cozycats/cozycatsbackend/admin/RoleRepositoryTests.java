@@ -1,5 +1,6 @@
-package com.cozycats.cozycatsbackend.admin.user;
+package com.cozycats.cozycatsbackend.admin;
 
+import com.cozycats.cozycatsbackend.admin.user.RoleRepository;
 import com.cozycats.cozycatscommon.entity.Role;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

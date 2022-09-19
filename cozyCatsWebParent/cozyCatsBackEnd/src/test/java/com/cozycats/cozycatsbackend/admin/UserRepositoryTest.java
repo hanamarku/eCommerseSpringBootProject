@@ -1,5 +1,6 @@
-package com.cozycats.cozycatsbackend.admin.user;
+package com.cozycats.cozycatsbackend.admin;
 
+import com.cozycats.cozycatsbackend.admin.user.UserRepository;
 import com.cozycats.cozycatscommon.entity.Role;
 import com.cozycats.cozycatscommon.entity.User;
 import org.junit.jupiter.api.Test;

@@ -10,6 +10,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 //import org.springframework.security.crypto.password.PasswordEncoder;
+//import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -57,10 +58,10 @@ public class UserService {
             if(user.getPassword().isEmpty()){
                 user.setPassword(existingUser.getPassword());
             }else{
-//                PasswordEncoder(user);
+                encodePassword(user);
             }
         }else {
-//            PasswordEncoder(user);
+            encodePassword(user);
         }
         return userRepo.save(user);
     }
@@ -82,7 +83,7 @@ public class UserService {
     }
 
 
-    public User get(Integer id) throws UserNotFoundException{
+    public User get(Integer id) throws UserNotFoundException {
         try {
             return userRepo.findById(id).get();
         }catch (NoSuchElementException ex){
