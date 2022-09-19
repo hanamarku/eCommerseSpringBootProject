@@ -57,4 +57,8 @@ public class CozyCatsUserDetails implements UserDetails {
     public boolean isEnabled() {
         return user.isEnabled();
     }
+
+    public String getFullName(){
+        return this.user.getFirstname() + " " + this.user.getLastname();
+    }
 }

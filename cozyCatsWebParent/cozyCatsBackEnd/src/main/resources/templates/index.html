@@ -1,9 +1,12 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta name="viewport" content="width=device-width; initial-scale=1.0, minimum-scale=1.0">
     <title>Home - COzyCats Admin</title>
+    <link rel="stylesheet" th:href="@{/fontawesome/all.css}">
+    <link rel="stylesheet" th:href="@{/style.css}">
     <link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/5.2.0/css/bootstrap.min.css}">
     <script type="text/javascript" th:src="@{/webjars/jquery/3.5.1/jquery.min.js}"></script>
     <script type="text/javascript" th:src="@{/webjars/bootstrap/5.2.0/js/bootstrap.min.js}"></script>
@@ -54,6 +57,27 @@
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" th:href="@{/settings}">Settings</a>
+                    </li>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <li>
+                        <span class="fas fa-user fa-2x icon-silver ps-5"></span>
+
+                    </li>
+
+                    <li>
+                        <a class="nav-link "  sec:authentication="principal.FullName"></a>
+                    </li>
+                    <li class="nav-item ">
+                        <a class="nav-link ps-5" >Logout</a>
+<!--
+<!--                        <div class="dropdown-menu">-->
+<!--                            <a class="dropdown-item" href="">Logout</a>-->
+
+<!--                        </div>-->
                     </li>
                 </ul>
             </div>
