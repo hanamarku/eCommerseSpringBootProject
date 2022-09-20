@@ -20,6 +20,9 @@
         <div th:if="${param.error}">
             <p class="alert alert-danger">[[${session.SPRING_SECURITY_LAST_EXCEPTION.message}]]</p>
         </div>
+        <div th:if="@{param.logout}">
+            <p class="text-warning">You have been logged out</p>
+        </div>
         <div class="border border-secondary rounded p-3">
             <div class="mb-3">
                 <label for="exampleInputEmail1" class="form-label">Email address</label>
@@ -29,7 +32,11 @@
                 <label for="exampleInputPassword1" class="form-label">Password</label>
                 <input type="password" name="password" class="form-control" id="exampleInputPassword1" required placeholder="Password">
             </div>
+            <p>
+                <input type="checkbox" name="remeber-me" /> &nbsp; Remember Me
+            </p>
             <input type="submit" value="Login" class="btn btn-primary"/>
+
         </div>
     </form>
     <div>
