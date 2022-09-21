@@ -1,4 +1,4 @@
-package com.cozycats.cozycatsbackend.admin.user;
+package com.cozycats.cozycatsbackend.admin.user.export;
 
 import com.cozycats.cozycatsbackend.admin.AbstractExporter;
 import com.cozycats.cozycatscommon.entity.User;

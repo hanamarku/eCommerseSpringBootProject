@@ -1,4 +1,4 @@
-package com.cozycats.cozycatsbackend.admin.user;
+package com.cozycats.cozycatsbackend.admin.user.Controllers;
 
 import com.cozycats.cozycatsbackend.admin.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;

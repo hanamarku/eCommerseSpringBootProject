@@ -10,7 +10,11 @@
 
     </div>
     <div>
-        <h1> Welcome to cozy cats admin panel </h1>
+        <h2> CozyCats Control Panel </h2>
+        Welcome <a class="text-decoration-none"  sec:authentication="principal.FullName"
+               th:href="@{/account}"></a>
+        &nbsp;
+        <span sec:authentication="principal.Authorities"></span>
     </div>
     <div th:replace="fragments :: footer"></div>
 </div>

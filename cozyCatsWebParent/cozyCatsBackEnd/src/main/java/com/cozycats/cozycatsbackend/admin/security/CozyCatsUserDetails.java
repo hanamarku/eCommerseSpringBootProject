@@ -26,6 +26,7 @@ public class CozyCatsUserDetails implements UserDetails {
             authorities.add(new SimpleGrantedAuthority(role.getName()));
         }
         return authorities;
+
     }
 
     @Override
@@ -60,5 +61,12 @@ public class CozyCatsUserDetails implements UserDetails {
 
     public String getFullName(){
         return this.user.getFirstname() + " " + this.user.getLastname();
+    }
+
+    public void setFirstName(String firstname){
+        this.user.setFirstname(firstname);
+    }
+    public void setLasttName(String lastname){
+        this.user.setLastname(lastname);
     }
 }
