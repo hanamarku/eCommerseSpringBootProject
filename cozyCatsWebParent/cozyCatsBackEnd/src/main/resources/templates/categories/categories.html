@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments :: page_head('Categories - CozyCats Admin', 'none')" />
+<body>
+<div class="container-fluid">
+    <div th:replace="navigation :: menu"></div>
+    <div class="container-fluid p-4">
+    <div>
+        <h2>Manage Categories</h2>
+
+        <a th:href="@{/categories/new}" class="text-decoration-none"> Add New Category <span class="fas fa-plus fa-lg"></span> </a>
+        &nbsp; | &nbsp;
+        <a th:href="@{/categories/export/csv}" class="text-decoration-none">Export to CSV <span class="fas fa-file-csv fa-lg"></span></a>
+
+    </div>
+
+
+    <div th:if="${message != null}" class="alert alert-success text-center">
+        [[${message}]]
+    </div>
+
+    <div style="width: 450px;">
+        <form th:action="@{/categories/page/1}" class="input-group m-3 form-outline">
+            <input type="hidden" name="sortField" th:value="${sortField}">
+            <input type="hidden" name="sortDir" th:value="${sortDir}">
+            Filter: &nbsp;
+            <input type="search" name="keyword" th:value="${keyword}" class="form-control" style="width: 30px;">
+            &nbsp; &nbsp;
+            <input type="submit" value="Search" class="btn btn-primary">
+            &nbsp; &nbsp;
+            <button type="button"  class="btn btn-secondary" onclick="clearFilter();">
+                <i class="fas fa-eraser"></i>
+            </button>
+        </form>
+    </div>
+
+
+    <div class="full-details">
+        <table class="table table-bordered table-striped table-hover table-responsive-xl">
+            <thead class="thead-dark">
+            <tr>
+                <th>ID</th>
+                <th>Category Image</th>
+                <th>
+                    <a  th:href="@{'/categories/page/' + ${pageNum} + '?sortDir=' + ${reverseSortDir}}">Category Name</a>
+                    <span th:class="${reverseSortDir == 'desc' ? 'fas fa-sort-up' : 'fas fa-sort-down'}" ></span>
+                </th>
+                <th>Alias</th>
+                <th>Enabled</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="cat : ${listCategories}">
+                <td>[[${cat.id}]]</td>
+                <td>
+                    <img th:src="@{${cat.imagePath}}" style="width: 100px" class="img-fluid"/>
+                </td>
+                <td>[[${cat.name}]]</td>
+                <td>[[${cat.alias}]]</td>
+                <td>
+                    <div th:replace="fragments :: status(${cat.enabled}, 'category', '/categories/' + ${cat.id})" />
+                </td>
+                <td>
+                    <a class="fa-solid fa-pen-to-square icon-blue fa-2x" th:href="@{'/categories/edit/' + ${cat.id}}"
+                       title="Edit this category"></a>
+                    &nbsp; &nbsp; &nbsp;
+                    <a class="fa-solid fa-trash fa-2x icon-red link-delete" th:href="@{'/categories/delete/' + ${cat.id}}"
+                       title="Delete this category"
+                       th:catId = "${cat.id}"></a>
+
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div th:if="${keyword != null}" class="text-center">
+        <span>Search result does not show categories in hierarchical form</span>
+        <div th:replace="fragments :: pagination('/categories', 'categories')"></div>
+    </div>
+
+    <th:block th:unless="${keyword != null}">
+
+    <div th:replace="fragments :: pagination('/categories', 'top-level categories')"></div>
+    </th:block>
+    <div th:replace="modal_fragments :: confirm_modal" />
+
+    <div th:replace="fragments :: footer"></div>
+    </div>
+</div>
+<script th:src="@{/js/common_list.js}"></script>
+<script type="text/javascript">
+    moduleURL = "[[@{/categories}]]";
+
+    $(document).ready(function() {
+        $(".link-delete").on("click", function(e) {
+            e.preventDefault();
+            showDeleteConfirmModal($(this), 'category', 'catId');
+        });
+    });
+</script>
+</body>
+</html>

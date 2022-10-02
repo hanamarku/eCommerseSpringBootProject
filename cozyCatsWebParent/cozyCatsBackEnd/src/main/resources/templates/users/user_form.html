@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head th:replace="fragments :: page_head('New User - CozyCats Admin')" />
+<head th:replace="fragments :: page_head('New User - CozyCats Admin', 'none')" />
 
 </head>
 <body>
@@ -88,24 +88,7 @@
         </div>
     </form>
 
-    <div class="modal fade text-center" id="modalDialog">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h4 class="modal-title" id="modalTitle">Warning</h4>
-                    <button type="button" class="Close" data-bs-dismiss="modal">&times;</button>
-                </div>
-                <div class="modal-body">
-                    <span id="modalBody"></span>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
-
-
-                </div>
-            </div>
-        </div>
-    </div>
+    <div th:replace="modal_fragments :: modal_dialog"></div>
 
     <div th:replace="fragments :: footer"></div>
 </div>

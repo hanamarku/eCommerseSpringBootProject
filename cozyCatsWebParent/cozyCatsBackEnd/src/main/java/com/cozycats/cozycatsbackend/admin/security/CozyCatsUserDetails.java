@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Set;
 
 public class CozyCatsUserDetails implements UserDetails {
+    private static final long serialVersionUID = 1L;
     private User user;
 
     public CozyCatsUserDetails(User user) {
@@ -68,5 +69,9 @@ public class CozyCatsUserDetails implements UserDetails {
     }
     public void setLasttName(String lastname){
         this.user.setLastname(lastname);
+    }
+
+    public boolean hasRole(String rolename){
+        return user.hasRole(rolename);
     }
 }

@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head th:replace="fragments :: page_head('Users - CozyCats Admin')" />
+<head th:replace="fragments :: page_head('Users - CozyCats Admin', 'none')" />
 </head>
 <body>
 <div class="container-fluid">
@@ -45,7 +45,7 @@
             <thead class="table-primary">
                 <tr class="text-decoration-none" style="text-decoration: none;">
 
-                    <th th:replace="fragments.html:: column_link('id', 'User ID')"/>
+                    <th th:replace="fragments :: column_link('/users', 'id', 'User ID', 'tag')" />
 
                     <th>Photo</th>
                     <th>
@@ -141,80 +141,31 @@
                                th:userId = "${user.id}"></a>
                         </div>
                     </div>
-                    <div>&nbsp;</div>
                 </div>
             </tr>
         </div>
 
-        <div class="text-center m-1" th:if="${totalItems > 0}">
-            <span>Showing users # [[${startCount}]] to [[${endCount}]] of [[${totalItems}]]</span>
-        </div>
+        <div th:replace="fragments :: pagination('/users', 'users')"></div>
 
-        <div class="text-center m-1" th:unless="${totalItems > 0}">
-            <span>No Users Found</span>
-        </div>
+<!--        <div th:replace="modal_fragments :: confirm_modal" />-->
 
-        <div th:if="${totalItems} > 0">
-            <nav >
-                <ul class="pagination justify-content-center flex-wrap">
-                    <li th:class="${currentPage > 1 ? 'page-item' : 'page-item disabled'}">
-                        <a class="page-link" th:href="@{'/users/page/1?sortField=' + ${sortField} + '&sortDir=' + ${sortDir} + ${keyword != null ? '&keyword=' + keyword : ''}}" href="#">First</a>
-                    </li>
-                    <li th:class="${currentPage > 1 ? 'page-item' : 'page-item disabled'}">
-                        <a class="page-link" th:href="@{'/users/page/' + ${currentPage - 1} + '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir} + ${keyword != null ? '&keyword=' + keyword : ''}}">Previous</a>
-                    </li>
-                    <li th:each=" i : ${#numbers.sequence(1, totalPages )}"
-                            th:class="${currentPage != i  ? 'page-item ': 'page-item active'}"  >
-                        <a class="page-link" th:href="@{'/users/page/' + ${i} + '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir} + ${keyword != null ? '&keyword=' + keyword : ''}}">[[${i}]]</a>
-                    </li>
-                    <li th:class="${currentPage < totalPages ? 'page-item' : 'page-item disabled'}">
-                        <a class="page-link" th:href="@{'/users/page/' + ${currentPage + 1} + '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir} + ${keyword != null ? '&keyword=' + keyword : ''}}" href="#">Next</a>
-                    </li>
-                    <li th:class="${currentPage < totalPages ? 'page-item' : 'page-item disabled'}">
-                        <a class="page-link" th:href="@{'/users/page/' + ${totalPages} + '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir} + ${keyword != null ? '&keyword=' + keyword : ''}}" href="#">Last</a>
-                    </li>
-                </ul>
-            </nav>
-        </div>
-
-
-        <div class="modal fade text-center" id="confirmDialog">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h4 class="modal-title" id="modalTitle">Delete Confirmation</h4>
-                        <button type="button" class="Close" data-bs-dismiss="modal">&times;</button>
-                    </div>
-                    <div class="modal-body">
-                        <span id="confirmText"> </span>
-                    </div>
-                    <div class="modal-footer">
-                        <a class="btn btn-success" id="yesBtn" href="">Yes</a>
-                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">No</button>
-                    </div>
-                </div>
-            </div>
-        </div>
+        <div th:replace="modal_fragments :: confirm_modal" />
+        <div th:replace="fragments :: footer"></div>
     </div>
 </div>
-<div th:replace="fragments :: footer"></div>
+
 </div>
+<script th:src="@{/js/common_list.js}"></script>
     <script type="text/javascript">
-        $(document).ready(function(){
-           $(".link-delete").on("click", function (e){
-               e.preventDefault();
-               link = $(this);
-               userId = link.attr("userId");
-               $("#yesBtn").attr("href", link.attr("href"));
-               $("#confirmText").text("Are you sure you want to remove this user ( Id : "+ userId+" )?");
-               $("#confirmDialog").modal("show");
-           })
+
+        moduleURL = "[[@{/users}]]";
+
+        $(document).ready(function() {
+            $(".link-delete").on("click", function(e) {
+                e.preventDefault();
+                showDeleteConfirmModal($(this), 'user', 'userId');
+            });
         });
-
-        function  clearFilter(){
-            window.location = "[[@{/users}]]";
-        }
     </script>
-
 </body>
 </html>

@@ -23,3 +23,7 @@
     /*large screen*/
     div.less-details{display: none;}
 }
+
+input[readonly] {
+    background-color: silver;
+}

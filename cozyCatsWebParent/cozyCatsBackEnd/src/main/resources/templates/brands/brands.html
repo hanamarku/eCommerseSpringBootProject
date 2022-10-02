@@ -1,0 +1,89 @@
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments :: page_head('Brands - CozyCats Admin', 'none')" /></head>
+<body>
+<div class="container-fluid">
+    <div th:replace="navigation :: menu"></div>
+    <div class="container-fluid p-4">
+        <div>
+            <h2>Manage Brands</h2>
+
+            <a th:href="@{/brands/new}" class="text-decoration-none"> Add New Brand <span class="fas fa-plus fa-lg"></span> </a>
+            &nbsp; | &nbsp;
+            <a th:href="@{/brands/export/csv}" class="text-decoration-none">Export to CSV <span class="fas fa-file-csv fa-lg"></span></a>
+        </div>
+
+        <div style="width: 450px;">
+            <form th:action="@{/brands/page/1}" class="input-group m-3 form-outline">
+                <input type="hidden" name="sortField" th:value="${sortField}">
+                <input type="hidden" name="sortDir" th:value="${sortDir}">
+                Filter: &nbsp;
+                <input type="search" name="keyword" th:value="${keyword}" class="form-control" style="width: 30px;">
+                &nbsp; &nbsp;
+                <input type="submit" value="Search" class="btn btn-primary">
+                &nbsp; &nbsp;
+                <button type="button"  class="btn btn-secondary" onclick="clearFilter();">
+                    <i class="fas fa-eraser"></i>
+                </button>
+            </form>
+        </div>
+
+        <div class="full-details">
+            <table class="table table-bordered table-striped table-hover table-responsive-xl">
+                <thead class="thead-dark">
+                <tr>
+                    <th>Brand ID</th>
+                    <th>Logo</th>
+                    <th th:replace="fragments :: column_link('/brands', 'name', 'Brand Name', 'none')" />
+                    <th>Categories</th>
+
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="brand : ${listBrands}">
+                    <td>[[${brand.id}]]</td>
+                    <td>
+                        <img th:src="@{${brand.logoPath}}" style="width: 100px" class="img-fluid"/>
+                    </td>
+                    <td>[[${brand.name}]]</td>
+                    <td>
+                        <th:block th:each="cat : ${brand.categories}">
+                            <span class="badge bg-warning text-black" th:text="${cat.name}"></span>
+                        </th:block>
+                    </td>
+                    <td>
+
+                    <a class="fa-solid fa-pen-to-square icon-blue fa-2x" th:href="@{'/brands/edit/' + ${brand.id}}"
+                       title="Edit this brand"></a>
+                    &nbsp; &nbsp; &nbsp;
+                    <a class="fa-solid fa-trash fa-2x icon-red link-delete" th:href="@{'/brands/delete/' + ${brand.id}}"
+                       title="Delete this brand"
+                       th:brandId = "${brand.id}"></a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div th:replace="fragments :: pagination('/brands', 'brands')"></div>
+
+        <div th:replace="modal_fragments :: confirm_modal" />
+
+        <div th:replace="fragments :: footer"></div>
+    </div>
+</div>
+<script th:src="@{/js/common_list.js}"></script>
+<script type="text/javascript">
+
+    moduleURL = "[[@{/brands}]]";
+
+    $(document).ready(function() {
+        $(".link-delete").on("click", function(e) {
+            e.preventDefault();
+            showDeleteConfirmModal($(this), 'brand', 'brandId');
+        });
+    });
+</script>
+</body>
+</html>
