@@ -2,9 +2,9 @@
 <html  xmlns:th="http://www.thymeleaf.org">
 <body>
 <div th:fragment="header_menu">
-    <nav class="navbar navbar-expand-lg text-black" style="background-color: rgba(233, 229, 221, 0.836);" >
+      <nav class="navbar navbar-expand-lg text-black" style="background-color: rgba(233, 229, 221, 0.836);" >
         <a class="navbar-brand" th:href="@{/}">
-            <img th:src="@{/images/logo-removebg-preview.png}" width="250px"/>
+            <img th:src="@{${SITE_LOGO}}" width="250px"/>
         </a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#topNavbar">
             <span class="navbar-toggler-icon"></span>
@@ -35,6 +35,21 @@
     </nav>
 </div>
 
+<div th:fragment="search_nav" class="row align-items-center">
+    <div style="width: 450px;">
+        <form th:action="@{/search}" method="get" class="input-group m-3 form-outline">
+            <input type="hidden" name="sortField" th:value="${sortField}">
+            <input type="hidden" name="sortDir" th:value="${sortDir}">
+<!--            Filter: &nbsp;-->
+            <input type="search" name="keyword" th:value="${keyword}" class="form-control"
+                  placeholder="keyword" style="width: 30px;">
+            &nbsp; &nbsp;
+            <input type="submit" value="Search" class="btn btn-outline-primary">
+            &nbsp; &nbsp;
+        </form>
+    </div>
+</div>
+
 <div th:fragment="footer_menu">
     <div>
         <nav class="navbar navbar-expand-lg text-black" style="background-color: rgba(233, 229, 221, 0.836);">
@@ -57,7 +72,7 @@
         </nav>
     </div>
     <div th:fragment="footer" class="text-center m-3">
-        <p>CozyCats - Copyright &copy; CozyCats Ltd.</p>
+        <p>[[${COPYRIGHT}]]</p>
     </div>
 </div>
 </body>

@@ -10,8 +10,19 @@
 	<div class="row">
 		<div class="col-sm">
 			<div>
-				<img th:src="@{${product.mainImagePath}}" class="img-fluid" />
-			</div>		
+				<img id="bigImage" th:src="@{${product.mainImagePath}}" class="img-fluid"  index="0"/>
+			</div>
+			<div class="row justify-content-center img-fluid">
+				<div class="col m-2">
+					<img class="image-thumbnail border-secondary p-1" th:src="@{${product.mainImagePath}}" width="100px" index="0">
+				</div>
+				<th:block th:each="extraImage, status : ${product.images}">
+					<div class="col m-2">
+						<img class="image-thumbnail border-secondary p-1" th:src="@{${extraImage.imagePath}}"width="100px"
+							 th:index="${status.count}">
+					</div>
+				</th:block>
+			</div>
 		</div>
 		<div class="col-sm">
 			<div>
@@ -22,12 +33,26 @@
 			</div>
 			<div>
 				List Price:
-				<span th:if="${product.discountPercent <= 0}">$ [[${product.price}]]</span>
-				<del th:if="${product.discountPercent > 0}"><span>$ [[${product.price}]]</span></del>
+				<span th:if="${product.discountPercent <= 0}">
+					<span th:if="${CURRENCY_SYMBOL_POSITION == 'Before price'}" th:remove="tag">[[${CURRENCY_SYMBOL}]]</span>
+					&nbsp;<span>[[${#numbers.formatDecimal(product.price, 1, THOUSANDS_POINT_TYPE, DECIMAL_DIGITS, DECIMAL_POINT_TYPE)}]]</span>&nbsp;
+					<span th:if="${CURRENCY_SYMBOL_POSITION == 'After price'}" th:remove="tag">[[${CURRENCY_SYMBOL}]]</span>
+				</span>
+				<span th:if="${CURRENCY_SYMBOL_POSITION == 'Before price'}" th:remove="tag">[[${CURRENCY_SYMBOL}]]</span>
+				&nbsp;
+				<del th:if="${product.discountPercent > 0}"><span>
+					<span style="font-size: larger; color: darkred">[[${#numbers.formatDecimal(product.price, 1, THOUSANDS_POINT_TYPE, DECIMAL_DIGITS, DECIMAL_POINT_TYPE)}]]</span>
+				</span></del>
+				&nbsp;
+				<span th:if="${CURRENCY_SYMBOL_POSITION == 'After price'}" th:remove="tag">[[${CURRENCY_SYMBOL}]]</span>
 			</div>
+
 			<div th:if="${product.discountPercent > 0}">
 				Price:
-				<span style="font-size: larger; color: darkred">$ [[${product.discountPrice}]]</span>
+				<span th:if="${CURRENCY_SYMBOL_POSITION == 'Before price'}" th:remove="tag">[[${CURRENCY_SYMBOL}]]</span>
+				&nbsp;
+				<span style="font-size: larger; color: darkred">[[${product.discountPrice}]]</span> &nbsp;
+				<span th:if="${CURRENCY_SYMBOL_POSITION == 'After price'}" th:remove="tag">[[${CURRENCY_SYMBOL}]]</span>
 				([[${product.discountPercent}]] % off)
 			</div>
 			<div>&nbsp;</div>
@@ -71,8 +96,26 @@
 			</th:block>
 		</div>
 	</div>
-		
+
+	<div th:replace="product/images_carousel :: content"></div>
 	<div th:replace="navigation :: footer_menu"></div>
-</div>	
+</div>
 </body>
+<script type="text/javascript">
+	$(document).ready(function (){
+		bigImage = $("#bigImage")
+		$(".image-thumbnail").mouseover(function (){
+			currentImageSource = $(this).attr("src");
+			currentImageIndex = $(this).attr("index");
+			bigImage.attr("src", currentImageSource);
+			bigImage.attr("index", currentImageIndex);
+		});
+
+		bigImage.on("click", function (){
+			$("#carouselModal").modal('show');
+			imageIndex = parseInt(bigImage.attr("index"));
+			$("#carouselExampleIndicators").carousel(imageIndex);
+		});
+	});
+</script>
 </html>

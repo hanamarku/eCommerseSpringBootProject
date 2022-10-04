@@ -4,9 +4,7 @@
 <body>
 <div class="container-fluid">
     <div th:replace="navigation :: header_menu"></div>
-    <div>
-        <h1>Welcome to CozyCats eCommerce</h1>
-    </div>
+    <div th:replace="navigation :: search_nav"></div>
     <div class="row">
         <div class="col" th:each="cat : ${listCategories}">
             <div><img th:src="@{${cat.imagePath}}" width="100" height="100" /></div>
