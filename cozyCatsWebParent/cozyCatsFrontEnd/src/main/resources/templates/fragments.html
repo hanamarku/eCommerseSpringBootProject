@@ -7,6 +7,7 @@
         <meta name="viewport" content="width=device-width; initial-scale=1.0, minimum-scale=1.0">
         <title>[[${title}]] - [[${SITE_NAME}]]</title>
         <link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/5.2.0/css/bootstrap.min.css}">
+        <link rel="stylesheet" th:href="@{/fontawesome/all.css}">
         <script type="text/javascript" th:src="@{/webjars/jquery/3.5.1/jquery.min.js}"></script>
         <script type="text/javascript" th:src="@{/webjars/bootstrap/5.2.0/js/bootstrap.min.js}"></script>
 
@@ -53,6 +54,50 @@
 
 <div th:fragment="footer_menu" class="text-center m-3">
     <p>CozyCats Control Panel - Copyright &copy; CozyCats</p>
+</div>
+
+
+<div th:fragment="modal_dialog" class="modal fade text-center" id="modalDialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="modalTitle">Warning</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+
+            <div class="modal-body">
+                <span id="modalBody"></span>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#confirmModal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div th:fragment="confirm_modal" >
+
+    <div class="modal fade text-center" id="confirmModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Delete Confirmation</h4>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+
+                <div class="modal-body">
+                    <span id="confirmText"></span>
+                </div>
+
+                <div class="modal-footer">
+                    <a class="btn btn-success" href="" id="yesButton">Yes</a>
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">No</button>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 </body>

@@ -2,6 +2,7 @@ package com.cozycats.cozycatsbackend.admin.Setting.State;
 
 import com.cozycats.cozycatscommon.entity.Country;
 import com.cozycats.cozycatscommon.entity.State;
+import com.cozycats.cozycatscommon.entity.StateDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

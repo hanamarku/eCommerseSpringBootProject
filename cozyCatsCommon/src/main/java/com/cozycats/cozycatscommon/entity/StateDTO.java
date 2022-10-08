@@ -1,4 +1,4 @@
-package com.cozycats.cozycatsbackend.admin.Setting.State;
+package com.cozycats.cozycatscommon.entity;
 
 public class StateDTO {
     private Integer id;

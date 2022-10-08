@@ -17,5 +17,13 @@
         <module>cozyCatsCommon</module>
         <module>cozyCatsWebParent</module>
     </modules>
+    <dependencies>
+<!--        <dependency>-->
+<!--            <groupId>org.springframework.boot</groupId>-->
+<!--            <artifactId>spring-boot-autoconfigure</artifactId>-->
+<!--            <version>2.7.4</version>-->
+<!--            <scope>compile</scope>-->
+<!--        </dependency>-->
+    </dependencies>
 
 </project>
