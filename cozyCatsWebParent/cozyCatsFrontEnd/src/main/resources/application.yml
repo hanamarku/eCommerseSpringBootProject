@@ -4,6 +4,16 @@ server:
         context-path: /cozyCats
 
 spring:
+    security:
+        oauth2:
+            client:
+                registration:
+                    google:
+                        client-id: 123956374047-vcths0ceg9jbcoltsrmfehgrpe8msm5j.apps.googleusercontent.com
+                        client-secret: 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
+                        scope:
+                            - email
+                            - profile
     main:
         allow-circular-references: 'true'
     datasource:
@@ -18,13 +28,4 @@ spring:
                     format_sql: true
             show-sql: true
 
-            security:
-                oauth2:
-                    client:
-                        registration:
-                            google:
-                                client-id: 123956374047-vcths0ceg9jbcoltsrmfehgrpe8msm5j.apps.googleusercontent.com
-                                client-secret: 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
-                            scope:
-                                - email
-                                - profile
+

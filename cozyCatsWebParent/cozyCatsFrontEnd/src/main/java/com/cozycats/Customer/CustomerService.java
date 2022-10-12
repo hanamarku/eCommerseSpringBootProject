@@ -1,5 +1,6 @@
 package com.cozycats.Customer;
 
+import Exceptions.CustomerNotFoundException;
 import com.cozycats.Setting.CountryRepository;
 import com.cozycats.cozycatscommon.entity.AuthenticationType;
 import com.cozycats.cozycatscommon.entity.Country;
@@ -38,6 +39,7 @@ public class CustomerService {
         encodePassword(customer);
         customer.setEnabled(false);
         customer.setCreatedTime(new Date());
+        customer.setAuthenticationType(AuthenticationType.DATABASE);
 
         String randomCode = RandomString.make(64);
         customer.setVerificationCode(randomCode);
@@ -73,17 +75,17 @@ public class CustomerService {
         }
     }
 
-    public void addNewCustomerUponOAuthLogin(String name, String email, String countryCode) {
+    public void addNewCustomerUponOAuthLogin(String name, String email, String countryCode,
+                                             AuthenticationType authenticationType) {
         Customer customer = new Customer();
         customer.setEmail(email);
         setName(name, customer);
 
         customer.setEnabled(true);
         customer.setCreatedTime(new Date());
-        customer.setAuthenticationType(AuthenticationType.GOOGLE);
+        customer.setAuthenticationType(authenticationType);
         customer.setPassword("");
         customer.setAddressLine1("");
-        customer.setAddressLine2("");
         customer.setCity("");
         customer.setState("");
         customer.setPhoneNumber("");
@@ -92,6 +94,7 @@ public class CustomerService {
 
         customerRepo.save(customer);
     }
+
 
     private void setName(String name, Customer customer) {
         String[] nameArray = name.split(" ");
@@ -105,5 +108,58 @@ public class CustomerService {
             String lastName = name.replaceFirst(firstName, "");
             customer.setLastName(lastName);
         }
+    }
+
+    public void update(Customer customerInForm) {
+        Customer customerInDB = customerRepo.findById(customerInForm.getId()).get();
+
+        if (customerInDB.getAuthenticationType().equals(AuthenticationType.DATABASE)) {
+            if (!customerInForm.getPassword().isEmpty()) {
+                String encodedPassword = passwordEncoder.encode(customerInForm.getPassword());
+                customerInForm.setPassword(encodedPassword);
+            } else {
+                customerInForm.setPassword(customerInDB.getPassword());
+            }
+        } else {
+            customerInForm.setPassword(customerInDB.getPassword());
+        }
+
+        customerInForm.setEnabled(customerInDB.isEnabled());
+        customerInForm.setCreatedTime(customerInDB.getCreatedTime());
+        customerInForm.setVerificationCode(customerInDB.getVerificationCode());
+        customerInForm.setAuthenticationType(customerInDB.getAuthenticationType());
+        customerInForm.setResetPasswordToken(customerInDB.getResetPasswordToken());
+
+        customerRepo.save(customerInForm);
+    }
+
+    public String updateResetPasswordToken(String email) throws CustomerNotFoundException {
+        Customer customer = customerRepo.findByEmail(email);
+        if (customer != null) {
+            String token = RandomString.make(30);
+            customer.setResetPasswordToken(token);
+            customerRepo.save(customer);
+
+            return token;
+        } else {
+            throw new CustomerNotFoundException("Could not find any customer with the email " + email);
+        }
+    }
+
+    public Customer getByResetPasswordToken(String token) {
+        return customerRepo.findByResetPasswordToken(token);
+    }
+
+    public void updatePassword(String token, String newPassword) throws CustomerNotFoundException {
+        Customer customer = customerRepo.findByResetPasswordToken(token);
+        if (customer == null) {
+            throw new CustomerNotFoundException("No customer found: invalid token");
+        }
+
+        customer.setPassword(newPassword);
+        customer.setResetPasswordToken(null);
+        encodePassword(customer);
+
+        customerRepo.save(customer);
     }
 }

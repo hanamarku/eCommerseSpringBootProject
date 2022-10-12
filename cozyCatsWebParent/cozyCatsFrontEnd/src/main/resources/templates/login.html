@@ -9,7 +9,7 @@
 	</div>
 
 	<div class="p-4">
-		<a class="btn btn-lg btn-primary fas fa-google-plus-g" th:href="@{/oauth2/authorization/google}">&nbsp; Continue with Google</a>
+		<a class="btn btn-lg btn-primary " th:href="@{/oauth2/authorization/google}"><i class="fa-brands fa-google"></i>&nbsp; Continue with Google</a>
 	</div>
 	
 	<form th:action="@{/login}" method="post" style="max-width: 350px; margin: 0 auto">
@@ -37,6 +37,10 @@
 	</form>
 	
 	<div>&nbsp;</div>
+	<div>&nbsp;</div>
+	<div>
+		or <a th:href="@{/forgot_password}">Forgot Password</a>
+	</div>
 	<div>
 		Don't have an acocunt? <a th:href="@{/register}"><b>Sign up</b></a>
 	</div>

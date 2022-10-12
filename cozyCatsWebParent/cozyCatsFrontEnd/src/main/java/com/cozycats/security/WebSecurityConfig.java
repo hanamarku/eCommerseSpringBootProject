@@ -10,6 +10,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -25,6 +26,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired private CustomerOAuth2UserService oAuth2UserService;
     @Autowired private OAuth2LoginSuccessHandler oAuth2LoginSuccessHandler;
+    @Autowired private DatabaseLoginSuccessHandler databaseLoginHandler;
 
     @Bean
     public PasswordEncoder passwordEncoder(){
@@ -35,26 +37,29 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                .antMatchers("/customer").authenticated()
+                .antMatchers("/account_details", "/update_account_details", "/cart").authenticated()
                 .anyRequest().permitAll()
                 .and()
                 .formLogin()
-                    .loginPage("/login")
-                    .usernameParameter("email")
-                    .permitAll()
+                .loginPage("/login")
+                .usernameParameter("email")
+                .successHandler(databaseLoginHandler)
+                .permitAll()
                 .and()
-                    .oauth2Login()
-                    .loginPage("/login")
-                    .userInfoEndpoint()
-                    .userService(oAuth2UserService)
+                .oauth2Login()
+                .loginPage("/login")
+                .userInfoEndpoint()
+                .userService(oAuth2UserService)
                 .and()
                 .successHandler(oAuth2LoginSuccessHandler)
                 .and()
-                    .logout().permitAll()
+                .logout().permitAll()
                 .and()
-                    .rememberMe()
-                    .key("1234567890_aBcDeFgHiJkLmNoPqRsTuVwXyZ")
-                    .tokenValiditySeconds(14 * 24 * 60 * 60)
+                .rememberMe()
+                .key("1234567890_aBcDeFgHiJkLmNoPqRsTuVwXyZ")
+                .tokenValiditySeconds(14 * 24 * 60 * 60)
+                .and()
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.ALWAYS)
         ;
     }
 
