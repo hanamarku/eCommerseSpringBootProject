@@ -53,13 +53,7 @@
 
                 <th:block sec:authorize="hasAnyAuthority('Admin', 'SalesPerson', 'Editor', 'Shipper')">
                     <div class="dropdown">
-                        <a class="nav-link dropdown-toggle"  data-bs-toggle="dropdown" aria-expanded="false"
-                           th:href="@{/products}">Products</a>
-                        <ul class="dropdown-menu">
-                            <a class="dropdown-item" th:href="@{/products/new}"
-                                 sec:authorize="hasAnyAuthority('Admin', 'Editor')">Create New</a>
-                            <a class="dropdown-item" th:href="@{/products}">View All</a>
-                        </ul>
+                        <a class="nav-link" th:href="@{/products}">Products</a>
                     </div>
                 </th:block>
 
@@ -68,9 +62,12 @@
                 <li class="nav-item">
                     <a class="nav-link" th:href="@{/customers}">Customers</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" th:href="@{/shipping}">Shipping</a>
-                </li>
+                <th:block sec:authorize="hasAuthority('Admin')">
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/shipping_rates}">Shipping Rates</a>
+                    </li>
+                </th:block>
+
 <!--                </th:block>-->
 
 <!--                <th:block sec:authorize="hasAnyAuthority('Admin', 'SalesPerson', 'Shipper')">-->

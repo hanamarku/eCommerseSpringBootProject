@@ -1,0 +1,25 @@
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments :: page_head('Brands - CozyCats Admin', 'none')" /></head>
+<body>
+<div class="container-fluid">
+    <div th:replace="navigation :: menu"></div>
+    <div class="container-fluid p-4">
+<h2>testtttt</h2>
+    </div>
+</div>
+<script th:src="@{/js/common_list.js}"></script>
+<script type="text/javascript">
+
+    moduleURL = "[[@{/brands}]]";
+
+    $(document).ready(function() {
+        $(".link-delete").on("click", function(e) {
+            e.preventDefault();
+            showDeleteConfirmModal($(this), 'brand', 'brandId');
+        });
+    });
+</script>
+</body>
+</html>
