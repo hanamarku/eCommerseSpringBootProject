@@ -70,11 +70,11 @@
 
 <!--                </th:block>-->
 
-<!--                <th:block sec:authorize="hasAnyAuthority('Admin', 'SalesPerson', 'Shipper')">-->
+                <th:block sec:authorize="hasAnyAuthority('Admin', 'SalesPerson', 'Shipper')">
                 <li class="nav-item">
                     <a class="nav-link" th:href="@{/orders}">Orders</a>
                 </li>
-<!--                </th:block>-->
+                </th:block>
 <!--                <th:block sec:authorize="hasAnyAuthority('Admin', 'SalesPerson')">-->
                 <li class="nav-item">
                     <a class="nav-link" th:href="@{/report}">Sales Report</a>

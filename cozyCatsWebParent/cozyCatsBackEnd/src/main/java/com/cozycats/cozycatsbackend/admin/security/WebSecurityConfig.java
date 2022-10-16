@@ -70,7 +70,7 @@ public void configure(WebSecurity web) throws Exception {
                 .antMatchers("/products", "/products/", "products/detail/**", "/products/page/**")
                     .hasAnyAuthority("Admin", "Editor", "SalesPerson", "Shipper")
                 .antMatchers("/products/**").hasAnyAuthority("Admin", "Editor")
-                .antMatchers("/shipping_rates/**").hasAnyAuthority("Admin")
+                .antMatchers("/customers/**", "/orders/**").hasAnyAuthority("Admin", "SalesPerson")
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()
