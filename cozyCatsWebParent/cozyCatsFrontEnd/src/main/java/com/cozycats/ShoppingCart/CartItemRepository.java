@@ -1,4 +1,4 @@
-package com.cozycats.ShppingCart;
+package com.cozycats.ShoppingCart;
 
 import com.cozycats.cozycatscommon.entity.CartItem;
 import com.cozycats.cozycatscommon.entity.Customer;
@@ -24,4 +24,8 @@ public interface CartItemRepository extends CrudRepository<CartItem, Integer> {
     @Modifying
     @Query("delete from CartItem c where c.customer.id = ?1 and c.product.id = ?2")
     public void deleteByCustomerAndProduct(Integer customerId, Integer productId);
+
+    @Modifying
+    @Query("DELETE from CartItem c WHERE c.customer.id = ?1")
+    public void deleteByCustomer(Integer customerId);
 }

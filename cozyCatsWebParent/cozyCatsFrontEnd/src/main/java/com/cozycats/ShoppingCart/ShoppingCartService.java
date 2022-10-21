@@ -1,4 +1,4 @@
-package com.cozycats.ShppingCart;
+package com.cozycats.ShoppingCart;
 
 import Exceptions.ShoppingCartException;
 import com.cozycats.Product.ProductRepository;
@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @Transactional
@@ -27,9 +26,10 @@ public class ShoppingCartService {
 
         if (cartItem != null) {
             updatedQuantity = cartItem.getQuantity() + quantity;
+
             if (updatedQuantity > 5) {
                 throw new ShoppingCartException("Could not add more " + quantity + " item(s)"
-                        + " because there are already " + cartItem.getQuantity() + " item(s) "
+                        + " because there's already " + cartItem.getQuantity() + " item(s) "
                         + "in your shopping cart. Maximum allowed quantity is 5.");
             }
         } else {
@@ -39,7 +39,9 @@ public class ShoppingCartService {
         }
 
         cartItem.setQuantity(updatedQuantity);
+
         cartRepo.save(cartItem);
+
         return updatedQuantity;
     }
 
@@ -56,6 +58,10 @@ public class ShoppingCartService {
 
     public void removeProduct(Integer productId, Customer customer){
         cartRepo.deleteByCustomerAndProduct(customer.getId(), productId);
+    }
+
+    public void deleteByCustomer(Customer customer){
+        cartRepo.deleteByCustomer(customer.getId());
     }
 
 }

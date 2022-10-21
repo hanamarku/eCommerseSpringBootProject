@@ -26,7 +26,7 @@ public class ShippingRateController {
 
     @GetMapping("/shipping_rates")
     public String listFirstPage(Model model) {
-        return listByPage(1, model, "name", "asc", null);
+        return defaultRedirectURL;
     }
 
     @GetMapping("/shipping_rates/page/{pageNum}")

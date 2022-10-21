@@ -1,4 +1,4 @@
-package com.cozycats.ShppingCart;
+package com.cozycats.ShoppingCart;
 
 import com.cozycats.cozycatscommon.entity.CartItem;
 import com.cozycats.cozycatscommon.entity.Customer;

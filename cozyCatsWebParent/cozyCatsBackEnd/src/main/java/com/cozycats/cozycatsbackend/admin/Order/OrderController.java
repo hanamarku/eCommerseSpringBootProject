@@ -26,7 +26,9 @@ public class OrderController {
 
     @Autowired
     private OrderService orderService;
-    @Autowired private SettingService settingService;
+
+    @Autowired
+    private SettingService settingService;
 
     @GetMapping("/orders")
     public String listFirstPage() {
