@@ -8,7 +8,7 @@
 		<h2>Manage Orders</h2>	
 	</div>
 
-	<div style="width: 450px;">
+	<div style="width: 450px;" class="py-2">
 		<form th:action="@{/orders/page/1}" class="input-group m-3 form-outline">
 			<input type="hidden" name="sortField" th:value="${sortField}">
 			<input type="hidden" name="sortDir" th:value="${sortDir}">
@@ -27,7 +27,7 @@
 		<table class="table table-bordered table-striped table-hover table-responsive-xl">
 			<thead class="thead-dark">
 				<tr>
-					<th th:replace="fragments :: column_link('/orders', 'id', 'ID', 'none')" />
+					<th th:replace="fragments :: column_link('/orders','id', 'ID', 'none')" />
 					<th th:replace="fragments :: column_link('/orders','customer', 'Customer', 'none')" />
 					<th th:replace="fragments :: column_link('/orders','total', 'Total', 'none')" />
 					<th th:replace="fragments :: column_link('/orders','orderTime', 'Order Time', 'none')" />

@@ -9,6 +9,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.test.annotation.Rollback;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
@@ -45,7 +46,7 @@ public class OrderRepositoryTests {
         mainOrder.setSubtotal(product.getPrice());
         mainOrder.setTotal(product.getPrice() + 10);
 
-        mainOrder.setPaymentMethod(PaymentMethod.CREDIT_CART);
+        mainOrder.setPaymentMethod(PaymentMethod.CREDIT_CARD);
         mainOrder.setStatus(OrderStatus.NEW);
         mainOrder.setDeliverDate(new Date());
         mainOrder.setDeliverDays(1);
@@ -136,6 +137,32 @@ public class OrderRepositoryTests {
 
         Optional<Order> byId = repo.findById(orderId);
         assertThat(byId).isNotPresent();
+    }
+
+    @Test
+    public void testUpdateOrderTracks() {
+        Integer orderId = 4;
+        Order order = repo.findById(orderId).get();
+
+        OrderTrack newTrack = new OrderTrack();
+        newTrack.setOrder(order);
+        newTrack.setUpdatedTime(new Date());
+        newTrack.setStatus(OrderStatus.NEW);
+        newTrack.setNotes(OrderStatus.NEW.defaultDescription());
+
+        OrderTrack processingTrack = new OrderTrack();
+        processingTrack.setOrder(order);
+        processingTrack.setUpdatedTime(new Date());
+        processingTrack.setStatus(OrderStatus.PROCESSING);
+        processingTrack.setNotes(OrderStatus.PROCESSING.defaultDescription());
+
+        List<OrderTrack> orderTracks = order.getOrderTracks();
+        orderTracks.add(newTrack);
+        orderTracks.add(processingTrack);
+
+        Order updatedOrder = repo.save(order);
+
+        assertThat(updatedOrder.getOrderTracks()).isNotNull();
     }
 
 }

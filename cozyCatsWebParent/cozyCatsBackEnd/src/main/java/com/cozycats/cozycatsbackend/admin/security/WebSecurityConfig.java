@@ -61,7 +61,8 @@ public void configure(WebSecurity web) throws Exception {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                .antMatchers("/users/**", "/test/**").hasAuthority("Admin")
+                .antMatchers("/states/list_by_country").hasAnyAuthority("Admin", "SalesPerson")
+                .antMatchers("/users/**", "/settings/**", "/countries/**", "/states/**").hasAuthority("Admin")
                 .antMatchers("/categories/**", "/brands/**").hasAnyAuthority("Admin", "Editor")
 
                 .antMatchers("/products/new", "/products/delete/**").hasAnyAuthority("Admin", "Editor")
@@ -70,7 +71,9 @@ public void configure(WebSecurity web) throws Exception {
                 .antMatchers("/products", "/products/", "products/detail/**", "/products/page/**")
                     .hasAnyAuthority("Admin", "Editor", "SalesPerson", "Shipper")
                 .antMatchers("/products/**").hasAnyAuthority("Admin", "Editor")
-                .antMatchers("/customers/**", "/orders/**").hasAnyAuthority("Admin", "SalesPerson")
+                .antMatchers("/orders", "/orders/", "/orders/page/**", "/orders/detail/**").hasAnyAuthority("Admin", "SalesPerson", "Shipper")
+                .antMatchers("/customers/**", "/orders/**", "/get_shipping_cost").hasAnyAuthority("Admin", "SalesPerson")
+                .antMatchers("/orders_shipper/update/**").hasAuthority("Shipper")
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()
@@ -82,6 +85,7 @@ public void configure(WebSecurity web) throws Exception {
                 rememberMe()
                 .key("AbcDefgHijKlmnOpqrs_1234567890")
                 .tokenValiditySeconds(7 * 24 * 60 * 60);
+        http.headers().frameOptions().sameOrigin();
     }
 //
 //    @Override

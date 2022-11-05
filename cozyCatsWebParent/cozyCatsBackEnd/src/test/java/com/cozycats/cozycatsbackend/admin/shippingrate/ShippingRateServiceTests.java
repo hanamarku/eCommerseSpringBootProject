@@ -1,0 +1,73 @@
+package com.cozycats.cozycatsbackend.admin.shippingrate;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
+import java.util.Optional;
+
+import Exceptions.ShippingRateNotFoundException;
+import com.cozycats.cozycatsbackend.admin.Product.ProductRepository;
+import com.cozycats.cozycatsbackend.admin.ShippingRates.ShippingRateRepository;
+import com.cozycats.cozycatsbackend.admin.ShippingRates.ShippingRateService;
+import com.cozycats.cozycatscommon.entity.Product;
+import com.cozycats.cozycatscommon.entity.ShippingRate;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.api.function.Executable;
+import org.mockito.InjectMocks;
+import org.mockito.Mockito;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
+
+@ExtendWith(MockitoExtension.class)
+@ExtendWith(SpringExtension.class)
+public class ShippingRateServiceTests {
+
+	@MockBean private ShippingRateRepository shipRepo;
+	@MockBean private ProductRepository productRepo;
+	
+	@InjectMocks
+	private ShippingRateService shipService;
+	
+	@Test
+	public void testCalculateShippingCost_NoRateFound() {
+		Integer productId = 1;
+		Integer countryId = 5;
+		String state = "Albania";
+		
+		Mockito.when(shipRepo.findByCountryAndState(countryId, state)).thenReturn(null);
+		
+		assertThrows(ShippingRateNotFoundException.class, new Executable() {
+			
+			@Override
+			public void execute() throws Throwable {
+				shipService.calculateShippingCost(productId, countryId, state);
+			}
+		});
+	}
+	
+	@Test
+	public void testCalculateShippingCost_RateFound() throws ShippingRateNotFoundException {
+		Integer productId = 1;
+		Integer countryId = 8;
+		String state = "Albania";
+		
+		ShippingRate shippingRate = new ShippingRate();
+		shippingRate.setRate(10);
+		
+		Mockito.when(shipRepo.findByCountryAndState(countryId, state)).thenReturn(shippingRate);
+		
+		Product product = new Product();
+		product.setWeigth(5);
+		product.setWidth(4);
+		product.setHeight(3);
+		product.setLength(8);		
+		
+		Mockito.when(productRepo.findById(productId)).thenReturn(Optional.of(product));
+	
+		float shippingCost = shipService.calculateShippingCost(productId, countryId, state);
+		
+		assertEquals(50, shippingCost);
+	}
+}

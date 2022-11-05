@@ -1,9 +1,9 @@
 package com.cozycats.cozycatsbackend.admin.Order;
 
 import Exceptions.OrderNotFoundException;
+import com.cozycats.cozycatsbackend.admin.Setting.Country.CountryRepository;
 import com.cozycats.cozycatsbackend.admin.paging.PagingAndSortingHelper;
-import com.cozycats.cozycatscommon.entity.Brand;
-import com.cozycats.cozycatscommon.entity.Order;
+import com.cozycats.cozycatscommon.entity.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Date;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -24,6 +25,9 @@ public class OrderService {
 
     @Autowired
     private OrderRepository repo;
+    @Autowired private
+    CountryRepository countryRepo;
+
 
     public List<Order> listAll() {
         return (List<Order>) repo.findAll();
@@ -59,4 +63,39 @@ public class OrderService {
         repo.deleteById(id);
     }
 
+    public List<Country> listAllCountries() {
+        return countryRepo.findAllByOrderByNameAsc();
+    }
+
+
+    public void save(Order orderInForm) {
+        Order orderInDB = repo.findById(orderInForm.getId()).get();
+        orderInForm.setOrderTime(orderInDB.getOrderTime());
+        orderInForm.setCustomer(orderInDB.getCustomer());
+
+        repo.save(orderInForm);
+    }
+
+
+    public void updateStatus(Integer orderId, String status) {
+        Order orderInDB = repo.findById(orderId).get();
+        OrderStatus statusToUpdate = OrderStatus.valueOf(status);
+
+        if (!orderInDB.hasStatus(statusToUpdate)) {
+            List<OrderTrack> orderTracks = orderInDB.getOrderTracks();
+
+            OrderTrack track = new OrderTrack();
+            track.setOrder(orderInDB);
+            track.setStatus(statusToUpdate);
+            track.setUpdatedTime(new Date());
+            track.setNotes(statusToUpdate.defaultDescription());
+
+            orderTracks.add(track);
+
+            orderInDB.setStatus(statusToUpdate);
+
+            repo.save(orderInDB);
+        }
+
+    }
 }

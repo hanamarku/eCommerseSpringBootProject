@@ -1,6 +1,7 @@
 package com.cozycats.cozycatsbackend.admin.Product;
 
 import Exceptions.ProductNotFoundException;
+import com.cozycats.cozycatsbackend.admin.paging.PagingAndSortingHelper;
 import com.cozycats.cozycatscommon.entity.Product;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -97,6 +98,19 @@ public static final int PRODUCTS_PER_PAGE = 5;
             throw new ProductNotFoundException("Could not find any product with ID " + id);
         }
         repo.deleteById(id);
+    }
+
+    public Page<Product> searchProducts(int pageNum, String sortField, String sortDir, String keyword) {
+        Sort sort = Sort.by(sortField);
+
+        sort = sortDir.equals("asc") ? sort.ascending() : sort.descending();
+
+        Pageable pageable = PageRequest.of(pageNum - 1, PRODUCTS_PER_PAGE, sort);
+
+        if (keyword == null && keyword.isEmpty()) {
+
+        }
+        return repo.findAll(keyword, pageable);
     }
 
     public Product get(Integer id) throws ProductNotFoundException {

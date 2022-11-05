@@ -2,8 +2,10 @@ package com.cozycats.cozycatsbackend.admin.ShippingRates;
 
 import Exceptions.ShippingRateAlreadyExistsException;
 import Exceptions.ShippingRateNotFoundException;
+import com.cozycats.cozycatsbackend.admin.Product.ProductRepository;
 import com.cozycats.cozycatsbackend.admin.Setting.Country.CountryRepository;
 import com.cozycats.cozycatscommon.entity.Country;
+import com.cozycats.cozycatscommon.entity.Product;
 import com.cozycats.cozycatscommon.entity.ShippingRate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -20,11 +22,13 @@ import java.util.NoSuchElementException;
 @Transactional
 public class ShippingRateService {
     public static final int RATES_PER_PAGE = 10;
-
+    private static final int DIM_DIVISOR = 139;
     @Autowired
     private ShippingRateRepository shipRepo;
     @Autowired
     private CountryRepository countryRepo;
+    @Autowired
+    private ProductRepository productRepo;
 
     public List<ShippingRate> listAll() {
         return (List<ShippingRate>) shipRepo.findAll();
@@ -85,5 +89,22 @@ public class ShippingRateService {
 
         }
         shipRepo.deleteById(id);
+    }
+
+    public float calculateShippingCost(Integer productId, Integer countryId, String state)
+            throws ShippingRateNotFoundException {
+        ShippingRate shippingRate = shipRepo.findByCountryAndState(countryId, state);
+
+        if (shippingRate == null) {
+            throw new ShippingRateNotFoundException("No shipping rate found for the given "
+                    + "destination. You have to enter shipping cost manually.");
+        }
+
+        Product product = productRepo.findById(productId).get();
+
+        float dimWeight = (product.getLength() * product.getWidth() * product.getHeight()) / DIM_DIVISOR;
+        float finalWeight = product.getWeigth() > dimWeight ? product.getWeigth() : dimWeight;
+
+        return finalWeight * shippingRate.getRate();
     }
 }
